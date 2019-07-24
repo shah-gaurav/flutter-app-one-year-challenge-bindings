@@ -36,9 +36,9 @@ class HomePage extends StatelessWidget {
               Container(
                 height: 150,
                 child: Binding<MainModel>(
-                  state: mainModel,
+                  instance: mainModel,
                   initialize: (mainModel) => mainModel.getItems(),
-                  rebuildWhenPropertyChanged: 'items',
+                  rebuildOnPropertyChanged: 'items',
                   builder: (_, mainModel) => mainModel.items == null
                       ? Center(
                           child: CircularProgressIndicator(),
@@ -54,8 +54,8 @@ class HomePage extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Binding<Item>(
-                                  state: mainModel.items[index],
-                                  rebuildWhenPropertyChanged: 'count',
+                                  instance: mainModel.items[index],
+                                  rebuildOnPropertyChanged: 'count',
                                   builder: (_, item) => ItemCard(
                                     item: item,
                                     color: randColor,
@@ -73,16 +73,16 @@ class HomePage extends StatelessWidget {
               Divider(),
               Center(
                 child: Binding<MainModel>(
-                  state: mainModel,
-                  rebuildWhenPropertyChanged: 'detailedIndex',
+                  instance: mainModel,
+                  rebuildOnPropertyChanged: 'detailedIndex',
                   builder: (_, mainModel) => mainModel.detailedIndex == null
                       ? Container()
                       : SizedBox(
                           width: 200,
                           height: 200,
                           child: Binding<Item>(
-                            state: mainModel.items[mainModel.detailedIndex],
-                            rebuildWhenPropertyChanged: 'count',
+                            instance: mainModel.items[mainModel.detailedIndex],
+                            rebuildOnPropertyChanged: 'count',
                             builder: (_, item) => ItemCard(
                               item: item,
                               color: mainModel.detailedColor,

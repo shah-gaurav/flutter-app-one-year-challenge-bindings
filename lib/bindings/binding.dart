@@ -5,23 +5,23 @@ import 'binding_provider.dart';
 import 'notify_property_changed.dart';
 
 class Binding<T extends NotifyPropertyChanged> extends StatefulWidget {
-  final T state;
+  final T instance;
   final Widget Function(BuildContext, T) builder;
   final void Function(T) initialize;
-  final String rebuildWhenPropertyChanged;
+  final String rebuildOnPropertyChanged;
 
   Binding({
-    @required this.state,
+    @required this.instance,
     @required this.builder,
-    @required this.rebuildWhenPropertyChanged,
+    @required this.rebuildOnPropertyChanged,
     this.initialize,
-  }) : super(key: state.key);
+  }) : super(key: instance.key);
 
   @override
   _BindingState createState() => _BindingState<T>(
-        state: state,
+        instance: instance,
         builder: builder,
-        rebuildWhenChanged: rebuildWhenPropertyChanged,
+        rebuildOnPropertyChanged: rebuildOnPropertyChanged,
         initialize: initialize,
       );
 }
@@ -30,16 +30,16 @@ class _BindingState<T extends NotifyPropertyChanged> extends State<Binding>
     implements BindingBase<T> {
   final Widget Function(BuildContext, T) builder;
   final void Function(T) initialize;
-  final String rebuildWhenChanged;
+  final String rebuildOnPropertyChanged;
   BindingProvider bindingProvider;
 
   @override
-  T state;
+  T instance;
 
   _BindingState({
-    @required this.state,
+    @required this.instance,
     @required this.builder,
-    @required this.rebuildWhenChanged,
+    @required this.rebuildOnPropertyChanged,
     this.initialize,
   });
 
@@ -47,15 +47,15 @@ class _BindingState<T extends NotifyPropertyChanged> extends State<Binding>
   void initState() {
     super.initState();
     bindingProvider = BindingProvider.of(context);
-    bindingProvider.add(rebuildWhenChanged, this);
+    bindingProvider.add(rebuildOnPropertyChanged, this);
     if (initialize != null) {
-      initialize(state);
+      initialize(instance);
     }
   }
 
   @override
   void dispose() {
-    bindingProvider.remove(rebuildWhenChanged, this);
+    bindingProvider.remove(rebuildOnPropertyChanged, this);
     super.dispose();
   }
 
@@ -66,6 +66,6 @@ class _BindingState<T extends NotifyPropertyChanged> extends State<Binding>
 
   @override
   Widget build(BuildContext context) {
-    return builder(context, state);
+    return builder(context, instance);
   }
 }

@@ -21,30 +21,32 @@ class BindingProvider extends InheritedWidget {
     return provider;
   }
 
-  void add(String rebuildWhenPropertyChanged, BindingBase instance) {
+  void add(String rebuildWhenPropertyChanged, BindingBase instanceToAdd) {
     if (!_instancesToNotify.containsKey(rebuildWhenPropertyChanged)) {
       _instancesToNotify[rebuildWhenPropertyChanged] = List<BindingBase>();
     }
-    if (!_instancesToNotify[rebuildWhenPropertyChanged].contains(instance)) {
-      instance.state.callback = propertyChanged;
-      _instancesToNotify[rebuildWhenPropertyChanged].add(instance);
+    if (!_instancesToNotify[rebuildWhenPropertyChanged]
+        .contains(instanceToAdd)) {
+      instanceToAdd.instance.callback = propertyChanged;
+      _instancesToNotify[rebuildWhenPropertyChanged].add(instanceToAdd);
     }
   }
 
-  void remove(String rebuildWhenPropertyChanged, BindingBase instance) {
+  void remove(String rebuildWhenPropertyChanged, BindingBase instanceToRemove) {
     if (!_instancesToNotify.containsKey(rebuildWhenPropertyChanged)) {
       return;
     }
-    if (_instancesToNotify[rebuildWhenPropertyChanged].contains(instance)) {
-      _instancesToNotify[rebuildWhenPropertyChanged].remove(instance);
+    if (_instancesToNotify[rebuildWhenPropertyChanged]
+        .contains(instanceToRemove)) {
+      _instancesToNotify[rebuildWhenPropertyChanged].remove(instanceToRemove);
     }
   }
 
   void propertyChanged({String propertyName, Key key}) {
     if (_instancesToNotify.containsKey(propertyName)) {
-      for (var instance in _instancesToNotify[propertyName]) {
-        if (instance.state.key == key) {
-          instance.rebuild();
+      for (var instanceToNotify in _instancesToNotify[propertyName]) {
+        if (instanceToNotify.instance.key == key) {
+          instanceToNotify.rebuild();
         }
       }
     }
