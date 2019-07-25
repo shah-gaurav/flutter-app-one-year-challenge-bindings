@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../bindings/binding.dart';
 import '../model/item_model.dart';
 
 class ItemCard extends StatelessWidget {
@@ -10,12 +11,16 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        color: color,
-        child: Center(
-          child: Text(item.count.toString()),
+    return Binding<Item>(
+      instance: item,
+      rebuildOnPropertyChanged: 'count',
+      builder: (_, item) => InkWell(
+        onTap: onTap,
+        child: Container(
+          color: color,
+          child: Center(
+            child: Text(item.count.toString()),
+          ),
         ),
       ),
     );
