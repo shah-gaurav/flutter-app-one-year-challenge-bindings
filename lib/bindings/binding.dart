@@ -7,14 +7,12 @@ import 'notify_property_changed.dart';
 class Binding<T extends NotifyPropertyChanged> extends StatefulWidget {
   final T instance;
   final Widget Function(BuildContext, T) builder;
-  final void Function(T) initialize;
   final String rebuildOnPropertyChanged;
 
   Binding({
     @required this.instance,
     @required this.builder,
     @required this.rebuildOnPropertyChanged,
-    this.initialize,
   }) : super(key: instance.key);
 
   @override
@@ -22,14 +20,12 @@ class Binding<T extends NotifyPropertyChanged> extends StatefulWidget {
         instance: instance,
         builder: builder,
         rebuildOnPropertyChanged: rebuildOnPropertyChanged,
-        initialize: initialize,
       );
 }
 
 class _BindingState<T extends NotifyPropertyChanged> extends State<Binding>
     implements BindingBase<T> {
   final Widget Function(BuildContext, T) builder;
-  final void Function(T) initialize;
   final String rebuildOnPropertyChanged;
   BindingProvider bindingProvider;
 
@@ -40,7 +36,6 @@ class _BindingState<T extends NotifyPropertyChanged> extends State<Binding>
     @required this.instance,
     @required this.builder,
     @required this.rebuildOnPropertyChanged,
-    this.initialize,
   });
 
   @override
@@ -48,9 +43,6 @@ class _BindingState<T extends NotifyPropertyChanged> extends State<Binding>
     super.initState();
     bindingProvider = BindingProvider.of(context);
     bindingProvider.add(rebuildOnPropertyChanged, this);
-    if (initialize != null) {
-      initialize(instance);
-    }
   }
 
   @override

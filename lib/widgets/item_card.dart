@@ -13,13 +13,13 @@ class ItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Binding<Item>(
       instance: item,
-      rebuildOnPropertyChanged: 'count',
-      builder: (_, item) => InkWell(
+      rebuildOnPropertyChanged: Item.countPropertyName,
+      builder: (_, itemInstance) => InkWell(
         onTap: onTap,
         child: Container(
           color: color,
           child: Center(
-            child: Text(item.count.toString()),
+            child: Text(itemInstance.count.toString()),
           ),
         ),
       ),

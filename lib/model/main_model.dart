@@ -5,6 +5,10 @@ import 'item_model.dart';
 import 'item_provider.dart';
 
 class MainModel extends NotifyPropertyChanged {
+  static const itemsPropertyName = 'items';
+  static const detailedColorPropertyName = 'detailedColor';
+  static const detailedIndexPropertyName = 'detailedIndex';
+
   final itemProvider = ItemProvider();
 
   List<Item> items;
@@ -14,14 +18,14 @@ class MainModel extends NotifyPropertyChanged {
   void getItems() async {
     items = await itemProvider.fetchItems();
 
-    propertyChanged(propertyName: 'items');
+    propertyChanged(propertyName: itemsPropertyName);
   }
 
   void showDetailed(Color color, int index) {
     detailedColor = color;
     detailedIndex = index;
 
-    propertyChanged(propertyName: 'detailedColor');
-    propertyChanged(propertyName: 'detailedIndex');
+    propertyChanged(propertyName: detailedColorPropertyName);
+    propertyChanged(propertyName: detailedIndexPropertyName);
   }
 }

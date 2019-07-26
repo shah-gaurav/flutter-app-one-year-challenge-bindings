@@ -2,8 +2,6 @@ import 'package:flutter/widgets.dart';
 
 import 'binding_base.dart';
 
-Type _typeOf<T>() => T;
-
 class BindingProvider extends InheritedWidget {
   final _instancesToNotify = Map<String, List<BindingBase>>();
 
@@ -11,6 +9,8 @@ class BindingProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => false;
+
+  static Type _typeOf<T>() => T;
 
   static BindingProvider of(BuildContext context) {
     final type = _typeOf<BindingProvider>();

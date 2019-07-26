@@ -2,25 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:random_color/random_color.dart';
 
 import '../bindings/binding.dart';
+import '../bindings/instance_provider.dart';
 import '../model/main_model.dart';
 import 'item_card.dart';
 
 class ItemListView extends StatelessWidget {
-  const ItemListView({
-    Key key,
-    @required this.mainModel,
-  }) : super(key: key);
-
-  final MainModel mainModel;
+  const ItemListView({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 150,
       child: Binding<MainModel>(
-        instance: mainModel,
-        initialize: (mainModel) => mainModel.getItems(),
-        rebuildOnPropertyChanged: 'items',
+        instance: InstanceProvider.of<MainModel>(context),
+        rebuildOnPropertyChanged: MainModel.itemsPropertyName,
         builder: (_, mainModel) => mainModel.items == null
             ? Center(
                 child: CircularProgressIndicator(),
